@@ -10,7 +10,8 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isProduction = !isDevelopment
 
-const filename = ext => isDevelopment ? `[name].${ext}` : `[name].[hash].${ext}`
+const filename = ext => isDevelopment ? `static/${ext}/[name].${ext}` : `static/${ext}/[name].[contenthash:8].${ext}`
+const chunkname = ext => isDevelopment ? `static/${ext}/[name].chunk.${ext}` : `static/${ext}/[name].[contenthash:8].chunk.${ext}`
 
 const cssLoaders = extra => {
     const loaders = [{
@@ -89,7 +90,8 @@ const pluginsList = () => {
             }]
         }),
         new MiniCssExtractPlugin({
-            filename: filename('.css')
+            filename: filename('css'),
+            chunkFilename: chunkname('css'),
         })
     ]
 
@@ -101,17 +103,14 @@ const pluginsList = () => {
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
-    entry: ['@babel/polyfill', './app/index.jsx'],
+    entry: ['@babel/polyfill', './app/index.tsx'],
     output: {
         filename: filename('js'),
         path: path.resolve(__dirname, 'build')
     },
     resolve: {
         modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-        extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
-        alias: {
-            '@': path.resolve(__dirname, 'src')
-        }
+        extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
     },
     optimization: optimizationOptions(),
     devServer: {
@@ -129,6 +128,11 @@ module.exports = {
                 use: loaderModuleOptions()
             },
             {
+                test: /\.jsx$/,
+                exclude: /node-modules/,
+                use: reactModuleOptions()
+            },
+            {
                 test: /\.ts$/,
                 exclude: /node-modules/,
                 loader: {
@@ -137,9 +141,9 @@ module.exports = {
                 }
             },
             {
-                test: /\.jsx$/,
+                test: /\.tsx$/,
                 exclude: /node-modules/,
-                use: reactModuleOptions()
+                use: 'ts-loader'
             },
             {
                 test: /\.css$/,
@@ -151,12 +155,29 @@ module.exports = {
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use: ['file-loader']
+                options: {
+                    name: 'static/media/[name].[ext]'
+                },
+                loader: 'file-loader'
             },
             {
                 test: /\.(ttf|woff|woff2|eot)$/,
-                use: ['file-loader']
+                options: {
+                    name: 'static/fonts/[name].[ext]'
+                },
+                loader: 'file-loader'
             },
+            // {
+            //     loader: require.resolve('file-loader'),
+            //     // Exclude `js` files to keep "css" loader working as it injects
+            //     // its runtime that would otherwise be processed through "file" loader.
+            //     // Also exclude `html` and `json` extensions so they get processed
+            //     // by webpacks internal loaders.
+            //     exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+            //     options: {
+            //         name: 'static/media/[name].[hash:8].[ext]',
+            //     }
+            // }
         ]
     }
 }
