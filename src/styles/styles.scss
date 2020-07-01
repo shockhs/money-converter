@@ -1,0 +1,30 @@
+@import 'roboto.scss';
+@import '~normalize.css';
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #799ab9;
+  color: #ffffff;
+}
+
+.container {
+  width: 1280px;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+h1 {
+  text-align: center;
+}
+
+
+img {
+  width: 200px;
+  height: 200px;
+}
