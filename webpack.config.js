@@ -85,7 +85,7 @@ const pluginsList = () => {
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin({
             patterns: [{
-                from: './public/favicon.png',
+                from: './public/favicon.ico',
                 to: path.resolve(__dirname, 'build')
             }]
         }),
@@ -165,19 +165,8 @@ module.exports = {
                 options: {
                     name: 'static/fonts/[name].[ext]'
                 },
-                loader: 'file-loader'
-            },
-            // {
-            //     loader: require.resolve('file-loader'),
-            //     // Exclude `js` files to keep "css" loader working as it injects
-            //     // its runtime that would otherwise be processed through "file" loader.
-            //     // Also exclude `html` and `json` extensions so they get processed
-            //     // by webpacks internal loaders.
-            //     exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
-            //     options: {
-            //         name: 'static/media/[name].[hash:8].[ext]',
-            //     }
-            // }
+                loader: 'url-loader'
+            }
         ]
     }
 }
