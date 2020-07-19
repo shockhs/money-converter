@@ -54,7 +54,7 @@ const Converter: FC = () => {
                             {optionsFrom}
                         </select>
                         <input type='text' value={controlInput} onChange={(e) => setControlInput(e.target.value)} />
-                        <h2>{controlInput ? /\d+(\.\d+)?$/.test(controlInput) ? 'From: ' + controlInput : 'Неверный формат данных' : 'Введите сумму'}</h2>
+                        <h2>{controlInput ? /\d+(\.\d+)?$/.test(controlInput) ?  controlInput : 'Неверный формат данных' : 'Введите сумму'}</h2>
                     </div>
                 </fieldset>
                 <fieldset className="fieldset-2">
