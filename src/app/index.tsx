@@ -5,28 +5,36 @@ import '../styles/styles.scss';
 import { obj } from './baseCountries';
 
 interface Country {
-    [key: string]: string
+    [key: string]: number
 }
 
 
 const Converter: FC = () => {
     const mounted = useRef(false)
-    const [rates, setRates] = useState<Country>({})
+    const [rates, setRates] = useState<Country>({ 'EUR': 1 })
     const [controlInput, setControlInput] = useState('')
     const [controlFrom, setControlFrom] = useState('')
     const [controlTo, setControlTo] = useState('')
 
     useEffect(() => {
         mounted.current = true
+        const cancelToken = axios.CancelToken.source()
         const fetchData = async () => {
-            await axios.get('https://api.exchangeratesapi.io/latest')
+            await axios.get('https://api.exchangeratesapi.io/latest',
+                { cancelToken: cancelToken.token })
                 .then((res: any) => {
                     if (res.status === 200) {
-                        setRates(res.data.rates)
+                        setRates(rates => {
+                            return JSON.parse(JSON.stringify(Object.assign(rates, res.data.rates)))
+                        })
                     }
                 })
         }
         fetchData()
+        return () => {
+            mounted.current = false
+            cancelToken.cancel()
+        }
     }, [])
 
     const optionsTo = useMemo(() => Object.keys(rates).map((key: string, index: number) => {
@@ -39,7 +47,7 @@ const Converter: FC = () => {
 
     const converter = useMemo(() => {
         if (!/\d+(\.\d+)?$/.test(controlInput)) return 'Неизвестно'
-        return (parseFloat(controlInput) / parseFloat(rates[controlFrom]) * parseFloat(rates[controlTo])).toFixed(3)
+        return (parseFloat(controlInput) / rates[controlFrom] * rates[controlTo]).toFixed(3)
     }, [controlFrom, controlTo, controlInput])
 
     return <div className='container'>
@@ -54,7 +62,7 @@ const Converter: FC = () => {
                             {optionsFrom}
                         </select>
                         <input type='text' value={controlInput} onChange={(e) => setControlInput(e.target.value)} />
-                        <h2>{controlInput ? /\d+(\.\d+)?$/.test(controlInput) ?  controlInput : 'Неверный формат данных' : 'Введите сумму'}</h2>
+                        <h2>{controlInput ? /\d+(\.\d+)?$/.test(controlInput) ? controlInput : 'Неверный формат данных' : 'Введите сумму'}</h2>
                     </div>
                 </fieldset>
                 <fieldset className="fieldset-2">
