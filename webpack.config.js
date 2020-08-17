@@ -115,6 +115,10 @@ module.exports = {
     optimization: optimizationOptions(),
     devServer: {
         contentBase: path.resolve(__dirname, 'build'),
+        https: {
+            key: path.resolve(__dirname, './cert/key.pem'),
+            cert: path.resolve(__dirname, './cert/cert.pem'),
+        },
         hot: isDevelopment,
         port: 4200
     },
@@ -152,13 +156,6 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/,
                 use: cssLoaders('sass-loader')
-            },
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                options: {
-                    name: 'static/media/[name].[ext]'
-                },
-                loader: 'file-loader'
             },
             {
                 test: /\.(ttf|woff|woff2|eot)$/,

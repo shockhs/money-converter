@@ -1,4 +1,4 @@
-export const obj: any = {
+const obj: { [key: string]: string } = {
     AUD: 'Australian Dollar',
     BGN: 'Bulgarian Lev',
     BRL: 'Brazilian Real',
@@ -33,3 +33,5 @@ export const obj: any = {
     USD: 'United States Dollar',
     ZAR: 'South African Rand',
 }
+
+export default obj
