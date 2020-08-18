@@ -12,10 +12,9 @@
   "author": "Vagan Mkrtchyan <perfoma777@mail.ru>",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
-    "dev": "cross-env NODE_ENV=development webpack --mode development",
-    "build": "cross-env NODE_ENV=production webpack --mode production",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open"
+    "dev": "cross-env NODE_ENV=development webpack --mode development --config=webpack",
+    "build": "cross-env NODE_ENV=production webpack --mode production --config=webpack",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --config=webpack --hot --inline"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -72,6 +71,6 @@
     "react-dom": "^16.13.1",
     "typescript": "^3.9.5"
   },
-  "main": "index.js",
+  "main": "webpack",
   "repository": "https://github.com/EsaxCO/project-starter.git"
 }
