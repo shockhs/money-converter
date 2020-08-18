@@ -1,4 +1,4 @@
-interface typeProps {
+type typeProps = {
     controlInput: string
     controlFrom: number
     controlTo: number

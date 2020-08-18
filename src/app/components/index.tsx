@@ -1,27 +1,14 @@
-import { AgentService } from '../services/agent'
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
-import '../styles/styles.scss'
-import Select from './Select'
+import { AgentService } from '../services/agent'
 import getExchangeResult from '../utils/converter'
 import FromField from './FromField'
+import Select from './Select'
+import Spinner from './commons/Spinner'
 import ToField from './ToField'
+import '../styles/styles.scss'
 
-export interface Country {
+export type Country = {
     [key: string]: number
-}
-
-const fetchData = async () => {
-    try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const data = AgentService.getExchangeRate().then((res: any) => {
-            if (res.status === 200) {
-                return res
-            }
-        })
-        return data
-    } catch (e) {
-        throw new Error(e)
-    }
 }
 
 const Converter: FC = () => {
@@ -32,9 +19,10 @@ const Converter: FC = () => {
     const [controlTo, setControlTo] = useState('')
 
     useEffect(() => {
-        mounted.current = true
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        fetchData().then((res: any) => setRates((rates) => JSON.parse(JSON.stringify(Object.assign(rates, res.data.rates)))))
+        AgentService.getExchangeRate().then((data: Country) => {
+            mounted.current = true
+            setRates((rates) => JSON.parse(JSON.stringify(Object.assign(rates, data))))
+        })
         return () => {
             mounted.current = false
         }
@@ -69,7 +57,7 @@ const Converter: FC = () => {
                     />
                 </form>
             ) : (
-                'Loading...'
+                <Spinner />
             )}
         </div>
     )

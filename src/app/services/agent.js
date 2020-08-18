@@ -11,7 +11,11 @@ class Agent {
     }
 
     getExchangeRate() {
-        return this.fetchData()
+        return this.fetchData().then((res) => {
+            if (res.status === 200) {
+                return res.data.rates
+            }
+        })
     }
 }
 

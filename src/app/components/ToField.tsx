@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-interface typeProps {
+type typeProps = {
     setControlTo: (arg: string) => void
     optionsTo: React.ReactNode
     controlTo: string

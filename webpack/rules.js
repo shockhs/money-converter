@@ -14,7 +14,6 @@ const reactModuleOptions = () => {
     return loaders
 }
 
-
 const cssLoaders = (extra) => {
     const loaders = [
         {
@@ -55,44 +54,50 @@ const babelOptions = (preset) => {
     return options
 }
 
-
 module.exports = [
-            {
-                test: /\.js$/,
-                exclude: /node-modules/,
-                use: loaderModuleOptions(),
-            },
-            {
-                test: /\.jsx$/,
-                exclude: /node-modules/,
-                use: reactModuleOptions(),
-            },
-            {
-                test: /\.ts$/,
-                exclude: /node-modules/,
-                loader: {
-                    loader: 'babel-loader',
-                    options: babelOptions('@babel/preset-typescript'),
-                },
-            },
-            {
-                test: /\.tsx$/,
-                exclude: /node-modules/,
-                use: 'ts-loader',
-            },
-            {
-                test: /\.css$/,
-                use: cssLoaders(),
-            },
-            {
-                test: /\.s[ac]ss$/,
-                use: cssLoaders('sass-loader'),
-            },
-            {
-                test: /\.(ttf|woff|woff2|eot)$/,
-                options: {
-                    name: 'static/fonts/[name].[ext]',
-                },
-                loader: 'url-loader',
-            },
-        ]
+    {
+        test: /\.js$/,
+        exclude: /node-modules/,
+        use: loaderModuleOptions(),
+    },
+    {
+        test: /\.jsx$/,
+        exclude: /node-modules/,
+        use: reactModuleOptions(),
+    },
+    {
+        test: /\.ts$/,
+        exclude: /node-modules/,
+        loader: {
+            loader: 'babel-loader',
+            options: babelOptions('@babel/preset-typescript'),
+        },
+    },
+    {
+        test: /\.tsx$/,
+        exclude: /node-modules/,
+        use: 'ts-loader',
+    },
+    {
+        test: /\.css$/,
+        use: cssLoaders(),
+    },
+    {
+        test: /\.s[ac]ss$/,
+        use: cssLoaders('sass-loader'),
+    },
+    {
+        test: /\.(png|svg|jpg|gif)$/,
+        options: {
+            name: 'static/media/[name].[ext]',
+        },
+        loader: 'file-loader',
+    },
+    {
+        test: /\.(ttf|woff|woff2|eot)$/,
+        options: {
+            name: 'static/fonts/[name].[ext]',
+        },
+        loader: 'url-loader',
+    },
+]
