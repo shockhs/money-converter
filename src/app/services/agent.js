@@ -1,17 +1,16 @@
 import axios from 'axios'
 
 class Agent {
-    fetchData = async () => {
+    fetchData = async (url) => {
         try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return await axios.get('https://api.exchangeratesapi.io/latest')
+            return await axios.get(url)
         } catch (e) {
             throw new Error(e)
         }
     }
 
     getExchangeRate() {
-        return this.fetchData().then((res) => {
+        return this.fetchData('https://api.exchangeratesapi.io/latest').then((res) => {
             if (res.status === 200) {
                 return res.data.rates
             }
