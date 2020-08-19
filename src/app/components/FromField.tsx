@@ -3,12 +3,12 @@ import React, { FC } from 'react'
 type typeProps = {
     setControlFrom: (arg: string) => void
     setControlInput: (arg: string) => void
-    optionsFrom: React.ReactNode
+    children: React.ReactNode
     controlFrom: string
     controlInput: string
 }
 
-const FromField: FC<typeProps> = ({ controlFrom, setControlFrom, controlInput, setControlInput, optionsFrom }: typeProps) => {
+const FromField: FC<typeProps> = ({ controlFrom, setControlFrom, controlInput, setControlInput, children }: typeProps) => {
     return (
         <fieldset className="fieldset-1">
             <legend>From</legend>
@@ -22,7 +22,7 @@ const FromField: FC<typeProps> = ({ controlFrom, setControlFrom, controlInput, s
                     <option value="none" disabled>
                         none
                     </option>
-                    {optionsFrom}
+                    {children}
                 </select>
                 <input type="text" value={controlInput} onChange={(e) => setControlInput(e.target.value)} />
                 <h2>

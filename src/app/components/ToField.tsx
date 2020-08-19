@@ -2,13 +2,13 @@ import React, { FC } from 'react'
 
 type typeProps = {
     setControlTo: (arg: string) => void
-    optionsTo: React.ReactNode
+    children: React.ReactNode
     controlTo: string
     controlFrom: string
     converter: React.ReactText
 }
 
-const ToField: FC<typeProps> = ({ controlTo, setControlTo, optionsTo, controlFrom, converter }: typeProps) => {
+const ToField: FC<typeProps> = ({ controlTo, setControlTo, children, controlFrom, converter }: typeProps) => {
     return (
         <fieldset className="fieldset-2">
             <legend>To</legend>
@@ -22,7 +22,7 @@ const ToField: FC<typeProps> = ({ controlTo, setControlTo, optionsTo, controlFro
                     <option value="none" disabled>
                         none
                     </option>
-                    {optionsTo}
+                    {children}
                 </select>
                 <h2>{controlTo && controlFrom ? converter : null}</h2>
             </div>

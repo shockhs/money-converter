@@ -28,10 +28,6 @@ const Converter: FC = () => {
         }
     }, [])
 
-    const optionsTo = useMemo(() => <Select rates={rates} control={controlFrom} />, [rates, controlFrom])
-
-    const optionsFrom = useMemo(() => <Select rates={rates} control={controlTo} />, [rates, controlTo])
-
     const converter = useMemo(() => {
         return getExchangeResult({ controlInput, controlFrom: rates[controlFrom], controlTo: rates[controlTo] })
     }, [controlFrom, controlTo, controlInput])
@@ -46,15 +42,12 @@ const Converter: FC = () => {
                         controlInput={controlInput}
                         setControlInput={setControlInput}
                         setControlFrom={setControlFrom}
-                        optionsFrom={optionsFrom}
-                    />
-                    <ToField
-                        controlFrom={controlFrom}
-                        setControlTo={setControlTo}
-                        optionsTo={optionsTo}
-                        controlTo={controlTo}
-                        converter={converter}
-                    />
+                    >
+                        <Select rates={rates} control={controlTo} />
+                    </FromField>
+                    <ToField controlFrom={controlFrom} setControlTo={setControlTo} controlTo={controlTo} converter={converter}>
+                        <Select rates={rates} control={controlFrom} />
+                    </ToField>
                 </form>
             ) : (
                 <Spinner />
